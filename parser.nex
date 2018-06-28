@@ -1,0 +1,28 @@
+/[ \t]/  { /* Skip blanks and tabs. */ }
+
+/add|ADD|Add/ { return ADD }
+/lw|LW|Lw/ { return LW }
+/sw|SW|Sw/ { return SW }
+/beq|BEQ|Beq/ { return BEQ }
+/addfp|ADDFP|Addfp/ { return ADDFP }
+/nop|NOP|Nop/ { return NOP }
+
+/,/ { return COMA }
+/\(/ { return AC }
+/\)/ { return CC }
+/\[/ { return AC }
+/\]/ { return CC }
+
+/-[0-9]+/ { lval.n,_ = strconv.Atoi(yylex.Text()); return NUM }
+/[0-9]+/ { lval.n,_ = strconv.Atoi(yylex.Text()); return NUM }
+
+
+/\n/ { return EOF }
+/./ {  }
+
+//
+package main
+import ("os";"strconv")
+func main() {
+yyParse(NewLexer(os.Stdin))
+}
