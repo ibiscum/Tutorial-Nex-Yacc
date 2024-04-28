@@ -1,8 +1,0 @@
-/stop/{ fmt.Println("Stop command received") }
-/start/{ fmt.Println("Start command received") }
-//
-package main
-import ("fmt";"os")
-func main() {
-    NN_FUN(NewLexer(os.Stdin))
-}

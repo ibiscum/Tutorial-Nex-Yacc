@@ -1,5 +1,5 @@
-# Example 01
+# Example 02
 
 Examples from https://berthub.eu/lex-yacc/
 
-    $ nex -o example01.go -s example01.nex && go build example01.go
+    $ nex -o example02.go -s example02.nex && go build example02.go

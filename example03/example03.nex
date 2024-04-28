@@ -1,0 +1,14 @@
+/[a-zA-Z][a-zA-Z0-9]*/{ fmt.Print("WORD ") }
+/[a-zA-Z0-9\/.-]+/{ fmt.Print("FILENAME ") }
+/"/{ fmt.Print("QUOTE ") }
+/{/{ fmt.Print("OBRACE ") }
+/}/{ fmt.Print("EBRACE ") }
+/;/{ fmt.Print("SEMICOLON ") }
+/\n/{ fmt.Print("\n") }
+/[ \t]+/{}
+//
+package main
+import ("fmt";"os")
+func main() {
+    NN_FUN(NewLexer(os.Stdin))
+}

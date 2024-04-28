@@ -185,156 +185,196 @@ type dfa struct {
 }
 
 var dfas = []dfa{
-	// stop
-	{[]bool{false, false, false, false, true}, []func(rune) int{ // Transitions
+	// [a-zA-Z][a-zA-Z0-9]*
+	{[]bool{false, true, true}, []func(rune) int{ // Transitions
 		func(r rune) int {
-			switch r {
-			case 111:
+			switch {
+			case 48 <= r && r <= 57:
 				return -1
-			case 112:
-				return -1
-			case 115:
+			case 65 <= r && r <= 90:
 				return 1
-			case 116:
-				return -1
+			case 97 <= r && r <= 122:
+				return 1
 			}
 			return -1
 		},
 		func(r rune) int {
-			switch r {
-			case 111:
-				return -1
-			case 112:
-				return -1
-			case 115:
-				return -1
-			case 116:
+			switch {
+			case 48 <= r && r <= 57:
+				return 2
+			case 65 <= r && r <= 90:
+				return 2
+			case 97 <= r && r <= 122:
 				return 2
 			}
 			return -1
 		},
 		func(r rune) int {
-			switch r {
-			case 111:
-				return 3
-			case 112:
-				return -1
-			case 115:
-				return -1
-			case 116:
-				return -1
+			switch {
+			case 48 <= r && r <= 57:
+				return 2
+			case 65 <= r && r <= 90:
+				return 2
+			case 97 <= r && r <= 122:
+				return 2
 			}
 			return -1
 		},
-		func(r rune) int {
-			switch r {
-			case 111:
-				return -1
-			case 112:
-				return 4
-			case 115:
-				return -1
-			case 116:
-				return -1
-			}
-			return -1
-		},
-		func(r rune) int {
-			switch r {
-			case 111:
-				return -1
-			case 112:
-				return -1
-			case 115:
-				return -1
-			case 116:
-				return -1
-			}
-			return -1
-		},
-	}, []int{ /* Start-of-input transitions */ -1, -1, -1, -1, -1}, []int{ /* End-of-input transitions */ -1, -1, -1, -1, -1}, nil},
+	}, []int{ /* Start-of-input transitions */ -1, -1, -1}, []int{ /* End-of-input transitions */ -1, -1, -1}, nil},
 
-	// start
-	{[]bool{false, false, false, false, false, true}, []func(rune) int{ // Transitions
+	// [a-zA-Z0-9\/.-]+
+	{[]bool{false, true}, []func(rune) int{ // Transitions
 		func(r rune) int {
 			switch r {
-			case 97:
-				return -1
-			case 114:
-				return -1
-			case 115:
+			case 45:
 				return 1
-			case 116:
-				return -1
+			case 46:
+				return 1
+			case 47:
+				return 1
+			}
+			switch {
+			case 48 <= r && r <= 57:
+				return 1
+			case 65 <= r && r <= 90:
+				return 1
+			case 97 <= r && r <= 122:
+				return 1
 			}
 			return -1
 		},
 		func(r rune) int {
 			switch r {
-			case 97:
-				return -1
-			case 114:
-				return -1
-			case 115:
-				return -1
-			case 116:
-				return 2
+			case 45:
+				return 1
+			case 46:
+				return 1
+			case 47:
+				return 1
+			}
+			switch {
+			case 48 <= r && r <= 57:
+				return 1
+			case 65 <= r && r <= 90:
+				return 1
+			case 97 <= r && r <= 122:
+				return 1
+			}
+			return -1
+		},
+	}, []int{ /* Start-of-input transitions */ -1, -1}, []int{ /* End-of-input transitions */ -1, -1}, nil},
+
+	// "
+	{[]bool{false, true}, []func(rune) int{ // Transitions
+		func(r rune) int {
+			switch r {
+			case 34:
+				return 1
 			}
 			return -1
 		},
 		func(r rune) int {
 			switch r {
-			case 97:
-				return 3
-			case 114:
+			case 34:
 				return -1
-			case 115:
-				return -1
-			case 116:
-				return -1
+			}
+			return -1
+		},
+	}, []int{ /* Start-of-input transitions */ -1, -1}, []int{ /* End-of-input transitions */ -1, -1}, nil},
+
+	// {
+	{[]bool{false, true}, []func(rune) int{ // Transitions
+		func(r rune) int {
+			switch r {
+			case 123:
+				return 1
 			}
 			return -1
 		},
 		func(r rune) int {
 			switch r {
-			case 97:
+			case 123:
 				return -1
-			case 114:
-				return 4
-			case 115:
-				return -1
-			case 116:
-				return -1
+			}
+			return -1
+		},
+	}, []int{ /* Start-of-input transitions */ -1, -1}, []int{ /* End-of-input transitions */ -1, -1}, nil},
+
+	// }
+	{[]bool{false, true}, []func(rune) int{ // Transitions
+		func(r rune) int {
+			switch r {
+			case 125:
+				return 1
 			}
 			return -1
 		},
 		func(r rune) int {
 			switch r {
-			case 97:
+			case 125:
 				return -1
-			case 114:
-				return -1
-			case 115:
-				return -1
-			case 116:
-				return 5
+			}
+			return -1
+		},
+	}, []int{ /* Start-of-input transitions */ -1, -1}, []int{ /* End-of-input transitions */ -1, -1}, nil},
+
+	// ;
+	{[]bool{false, true}, []func(rune) int{ // Transitions
+		func(r rune) int {
+			switch r {
+			case 59:
+				return 1
 			}
 			return -1
 		},
 		func(r rune) int {
 			switch r {
-			case 97:
-				return -1
-			case 114:
-				return -1
-			case 115:
-				return -1
-			case 116:
+			case 59:
 				return -1
 			}
 			return -1
 		},
-	}, []int{ /* Start-of-input transitions */ -1, -1, -1, -1, -1, -1}, []int{ /* End-of-input transitions */ -1, -1, -1, -1, -1, -1}, nil},
+	}, []int{ /* Start-of-input transitions */ -1, -1}, []int{ /* End-of-input transitions */ -1, -1}, nil},
+
+	// \n
+	{[]bool{false, true}, []func(rune) int{ // Transitions
+		func(r rune) int {
+			switch r {
+			case 10:
+				return 1
+			}
+			return -1
+		},
+		func(r rune) int {
+			switch r {
+			case 10:
+				return -1
+			}
+			return -1
+		},
+	}, []int{ /* Start-of-input transitions */ -1, -1}, []int{ /* End-of-input transitions */ -1, -1}, nil},
+
+	// [ \t]+
+	{[]bool{false, true}, []func(rune) int{ // Transitions
+		func(r rune) int {
+			switch r {
+			case 9:
+				return 1
+			case 32:
+				return 1
+			}
+			return -1
+		},
+		func(r rune) int {
+			switch r {
+			case 9:
+				return 1
+			case 32:
+				return 1
+			}
+			return -1
+		},
+	}, []int{ /* Start-of-input transitions */ -1, -1}, []int{ /* End-of-input transitions */ -1, -1}, nil},
 }
 
 func NewLexer(in io.Reader) *Lexer {
@@ -395,11 +435,34 @@ func main() {
 			switch yylex.next(0) {
 			case 0:
 				{
-					fmt.Println("Stop command received")
+					fmt.Print("WORD ")
 				}
 			case 1:
 				{
-					fmt.Println("Start command received")
+					fmt.Print("FILENAME ")
+				}
+			case 2:
+				{
+					fmt.Print("QUOTE ")
+				}
+			case 3:
+				{
+					fmt.Print("OBRACE ")
+				}
+			case 4:
+				{
+					fmt.Print("EBRACE ")
+				}
+			case 5:
+				{
+					fmt.Print("SEMICOLON ")
+				}
+			case 6:
+				{
+					fmt.Print("\n")
+				}
+			case 7:
+				{
 				}
 			default:
 				break OUTER0
