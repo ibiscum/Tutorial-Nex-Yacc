@@ -1,0 +1,9 @@
+/.|\n/ { fmt.Printf("%v", ECHO()); }
+//
+package main
+import ("fmt";"os")
+func main() {
+    lex := NewLexer(os.Stdin)
+    ECHO := func() string { return lex.Text() }
+    NN_FUN(lex)
+}

@@ -14,24 +14,23 @@ n int
 
 %token NUM ADD LW SW BEQ NOP ADDFP COMA AC CC EOF
 %%
-input:    /* empty */
-| input line
-;
+input:  /* empty */
+    | input line
+    ;
 
-line:     '\n'
-| instruction EOF
-;
+line:   '\n'
+    | instruction EOF
+    ;
 
 instruction: ADD NUM COMA NUM COMA NUM  { add_to_bin(0, $2.n,$4.n,$6.n); }
-| ADDFP NUM COMA NUM COMA NUM  { add_to_bin(1, $2.n,$4.n,$6.n); }
-| SW NUM COMA NUM AC NUM CC  { LW_SW_to_bin(1, $2.n,$4.n,$6.n); }
-| LW NUM COMA NUM AC NUM CC  { LW_SW_to_bin(0, $2.n,$4.n,$6.n); }
-| BEQ NUM COMA NUM COMA NUM { beq_to_bin($2.n,$4.n,$6.n); }
-| NOP { nop_to_bin(); }
-;
+    | ADDFP NUM COMA NUM COMA NUM       { add_to_bin(1, $2.n,$4.n,$6.n); }
+    | SW NUM COMA NUM AC NUM CC         { LW_SW_to_bin(1, $2.n,$4.n,$6.n); }
+    | LW NUM COMA NUM AC NUM CC         { LW_SW_to_bin(0, $2.n,$4.n,$6.n); }
+    | BEQ NUM COMA NUM COMA NUM         { beq_to_bin($2.n,$4.n,$6.n); }
+    | NOP                               { nop_to_bin(); }
+    ;
 
 %%
-
 
 func add_to_bin(op, r0, r1, r2 int) (error, string) {
     bin := ""
@@ -112,18 +111,18 @@ func LW_SW_to_bin(op, r0, r1, r2 int) (error, string) {
 
 	sr3 := strconv.FormatUint(ur3, 2)
 	if len(sr3) > 5 {
-		
+
 	} else if len(sr3) < 5 {
 		// rellenar con 0' s
 		cero := strings.Repeat("0", 5 - len(sr3))
 		sr3 = cero + sr3
-}
+    }
 
-shamt := "00000000000"
-bin = bin + sr3 + sr1 + shamt + sr2
+    shamt := "00000000000"
+    bin = bin + sr3 + sr1 + shamt + sr2
 
-fmt.Println(bin)
-return nil, bin
+    fmt.Println(bin)
+    return nil, bin
 }
 
 func beq_to_bin(r0, r1, r2 int) (error, string) {
@@ -165,4 +164,8 @@ func beq_to_bin(r0, r1, r2 int) (error, string) {
 
 	fmt.Println(bin)
 	return nil, bin
+}
+
+func nop_to_bin () error {
+    return nil
 }

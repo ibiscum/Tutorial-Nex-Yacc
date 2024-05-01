@@ -1,0 +1,13 @@
+/[0-9]+/                 { lval.n,_ = strconv.Atoi(yylex.Text()); return NUMBER; }
+/heat/                   { return TOKHEAT; }
+/on|off/                 { return STATE; }
+/target/                 { return TOKTARGET; }
+/temperature/            { return TOKTEMPERATURE; }
+/\n/                     { /* ignore end of line */ }
+/[ \t]+/                 { /* ignore whitespace */ }
+//
+package main
+import ("os";"strconv")
+func main() {
+    yyParse(NewLexer(os.Stdin))
+}
