@@ -185,96 +185,156 @@ type dfa struct {
 }
 
 var dfas = []dfa{
-	// [0123456789]+
-	{[]bool{false, true}, []func(rune) int{ // Transitions
+	// stop
+	{[]bool{false, false, false, false, true}, []func(rune) int{ // Transitions
 		func(r rune) int {
 			switch r {
-			case 48:
-				return 1
-			case 49:
-				return 1
-			case 50:
-				return 1
-			case 51:
-				return 1
-			case 52:
-				return 1
-			case 53:
-				return 1
-			case 54:
-				return 1
-			case 55:
-				return 1
-			case 56:
-				return 1
-			case 57:
-				return 1
-			}
-			return -1
-		},
-		func(r rune) int {
-			switch r {
-			case 48:
-				return 1
-			case 49:
-				return 1
-			case 50:
-				return 1
-			case 51:
-				return 1
-			case 52:
-				return 1
-			case 53:
-				return 1
-			case 54:
-				return 1
-			case 55:
-				return 1
-			case 56:
-				return 1
-			case 57:
-				return 1
-			}
-			return -1
-		},
-	}, []int{ /* Start-of-input transitions */ -1, -1}, []int{ /* End-of-input transitions */ -1, -1}, nil},
-
-	// [a-zA-Z][a-zA-Z0-9]*
-	{[]bool{false, true, true}, []func(rune) int{ // Transitions
-		func(r rune) int {
-			switch {
-			case 48 <= r && r <= 57:
+			case 111:
 				return -1
-			case 65 <= r && r <= 90:
+			case 112:
+				return -1
+			case 115:
 				return 1
-			case 97 <= r && r <= 122:
-				return 1
+			case 116:
+				return -1
 			}
 			return -1
 		},
 		func(r rune) int {
-			switch {
-			case 48 <= r && r <= 57:
-				return 2
-			case 65 <= r && r <= 90:
-				return 2
-			case 97 <= r && r <= 122:
+			switch r {
+			case 111:
+				return -1
+			case 112:
+				return -1
+			case 115:
+				return -1
+			case 116:
 				return 2
 			}
 			return -1
 		},
 		func(r rune) int {
-			switch {
-			case 48 <= r && r <= 57:
-				return 2
-			case 65 <= r && r <= 90:
-				return 2
-			case 97 <= r && r <= 122:
+			switch r {
+			case 111:
+				return 3
+			case 112:
+				return -1
+			case 115:
+				return -1
+			case 116:
+				return -1
+			}
+			return -1
+		},
+		func(r rune) int {
+			switch r {
+			case 111:
+				return -1
+			case 112:
+				return 4
+			case 115:
+				return -1
+			case 116:
+				return -1
+			}
+			return -1
+		},
+		func(r rune) int {
+			switch r {
+			case 111:
+				return -1
+			case 112:
+				return -1
+			case 115:
+				return -1
+			case 116:
+				return -1
+			}
+			return -1
+		},
+	}, []int{ /* Start-of-input transitions */ -1, -1, -1, -1, -1}, []int{ /* End-of-input transitions */ -1, -1, -1, -1, -1}, nil},
+
+	// start
+	{[]bool{false, false, false, false, false, true}, []func(rune) int{ // Transitions
+		func(r rune) int {
+			switch r {
+			case 97:
+				return -1
+			case 114:
+				return -1
+			case 115:
+				return 1
+			case 116:
+				return -1
+			}
+			return -1
+		},
+		func(r rune) int {
+			switch r {
+			case 97:
+				return -1
+			case 114:
+				return -1
+			case 115:
+				return -1
+			case 116:
 				return 2
 			}
 			return -1
 		},
-	}, []int{ /* Start-of-input transitions */ -1, -1, -1}, []int{ /* End-of-input transitions */ -1, -1, -1}, nil},
+		func(r rune) int {
+			switch r {
+			case 97:
+				return 3
+			case 114:
+				return -1
+			case 115:
+				return -1
+			case 116:
+				return -1
+			}
+			return -1
+		},
+		func(r rune) int {
+			switch r {
+			case 97:
+				return -1
+			case 114:
+				return 4
+			case 115:
+				return -1
+			case 116:
+				return -1
+			}
+			return -1
+		},
+		func(r rune) int {
+			switch r {
+			case 97:
+				return -1
+			case 114:
+				return -1
+			case 115:
+				return -1
+			case 116:
+				return 5
+			}
+			return -1
+		},
+		func(r rune) int {
+			switch r {
+			case 97:
+				return -1
+			case 114:
+				return -1
+			case 115:
+				return -1
+			case 116:
+				return -1
+			}
+			return -1
+		},
+	}, []int{ /* Start-of-input transitions */ -1, -1, -1, -1, -1, -1}, []int{ /* End-of-input transitions */ -1, -1, -1, -1, -1, -1}, nil},
 }
 
 func NewLexer(in io.Reader) *Lexer {
@@ -335,11 +395,11 @@ func main() {
 			switch yylex.next(0) {
 			case 0:
 				{
-					fmt.Println("NUMBER")
+					fmt.Println("Stop command received")
 				}
 			case 1:
 				{
-					fmt.Println("WORD")
+					fmt.Println("Start command received")
 				}
 			default:
 				break OUTER0

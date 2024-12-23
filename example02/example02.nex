@@ -1,8 +1,13 @@
-/[0123456789]+/{ fmt.Println("NUMBER") }
-/[a-zA-Z][a-zA-Z0-9]*/{ fmt.Println("WORD") }
+/[0123456789]+/         { fmt.Println("NUMBER") }
+/[a-zA-Z][a-zA-Z0-9]*/  { fmt.Println("WORD") }
 //
+
 package main
-import ("fmt";"os")
+import (
+    "fmt"
+    "os"
+)
+
 func main() {
     NN_FUN(NewLexer(os.Stdin))
 }

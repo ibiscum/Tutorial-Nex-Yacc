@@ -288,5 +288,5 @@ func main() {
 		yylex.pop()
 
 	}(NewLexer(os.Stdin))
-	fmt.Printf("%d %d\n", nLines, nChars)
+	fmt.Printf("nLines %d, nChars %d\n", nLines, nChars)
 }

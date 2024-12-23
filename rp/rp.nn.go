@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"os"
+	"strconv"
 )
 import (
 	"bufio"
@@ -185,96 +185,48 @@ type dfa struct {
 }
 
 var dfas = []dfa{
-	// [0123456789]+
+	// [ \t]
 	{[]bool{false, true}, []func(rune) int{ // Transitions
 		func(r rune) int {
 			switch r {
-			case 48:
+			case 9:
 				return 1
-			case 49:
-				return 1
-			case 50:
-				return 1
-			case 51:
-				return 1
-			case 52:
-				return 1
-			case 53:
-				return 1
-			case 54:
-				return 1
-			case 55:
-				return 1
-			case 56:
-				return 1
-			case 57:
+			case 32:
 				return 1
 			}
 			return -1
 		},
 		func(r rune) int {
 			switch r {
-			case 48:
-				return 1
-			case 49:
-				return 1
-			case 50:
-				return 1
-			case 51:
-				return 1
-			case 52:
-				return 1
-			case 53:
-				return 1
-			case 54:
-				return 1
-			case 55:
-				return 1
-			case 56:
-				return 1
-			case 57:
-				return 1
+			case 9:
+				return -1
+			case 32:
+				return -1
 			}
 			return -1
 		},
 	}, []int{ /* Start-of-input transitions */ -1, -1}, []int{ /* End-of-input transitions */ -1, -1}, nil},
 
-	// [a-zA-Z][a-zA-Z0-9]*
-	{[]bool{false, true, true}, []func(rune) int{ // Transitions
+	// [0-9]*
+	{[]bool{true}, []func(rune) int{ // Transitions
 		func(r rune) int {
 			switch {
 			case 48 <= r && r <= 57:
-				return -1
-			case 65 <= r && r <= 90:
-				return 1
-			case 97 <= r && r <= 122:
-				return 1
+				return 0
 			}
 			return -1
+		},
+	}, []int{ /* Start-of-input transitions */ -1}, []int{ /* End-of-input transitions */ -1}, nil},
+
+	// .
+	{[]bool{false, true}, []func(rune) int{ // Transitions
+		func(r rune) int {
+			return 1
 		},
 		func(r rune) int {
-			switch {
-			case 48 <= r && r <= 57:
-				return 2
-			case 65 <= r && r <= 90:
-				return 2
-			case 97 <= r && r <= 122:
-				return 2
-			}
 			return -1
 		},
-		func(r rune) int {
-			switch {
-			case 48 <= r && r <= 57:
-				return 2
-			case 65 <= r && r <= 90:
-				return 2
-			case 97 <= r && r <= 122:
-				return 2
-			}
-			return -1
-		},
-	}, []int{ /* Start-of-input transitions */ -1, -1, -1}, []int{ /* End-of-input transitions */ -1, -1, -1}, nil},
+	}, []int{ /* Start-of-input transitions */ -1, -1}, []int{ /* End-of-input transitions */ -1, -1}, nil},
 }
 
 func NewLexer(in io.Reader) *Lexer {
@@ -328,25 +280,38 @@ func (yylex *Lexer) next(lvl int) int {
 func (yylex *Lexer) pop() {
 	yylex.stack = yylex.stack[:len(yylex.stack)-1]
 }
-func main() {
-	func(yylex *Lexer) {
-	OUTER0:
-		for {
-			switch yylex.next(0) {
-			case 0:
-				{
-					fmt.Println("NUMBER")
-				}
-			case 1:
-				{
-					fmt.Println("WORD")
-				}
-			default:
-				break OUTER0
-			}
-			continue
-		}
-		yylex.pop()
+func (yylex Lexer) Error(e string) {
+	panic(e)
+}
 
-	}(NewLexer(os.Stdin))
+// Lex runs the lexer. Always returns 0.
+// When the -s option is given, this function is not generated;
+// instead, the NN_FUN macro runs the lexer.
+func (yylex *Lexer) Lex(lval *yySymType) int {
+OUTER0:
+	for {
+		switch yylex.next(0) {
+		case 0:
+			{ /* Skip blanks and tabs. */
+			}
+		case 1:
+			{
+				lval.n, _ = strconv.Atoi(yylex.Text())
+				return NUM
+			}
+		case 2:
+			{
+				return int(yylex.Text()[0])
+			}
+		default:
+			break OUTER0
+		}
+		continue
+	}
+	yylex.pop()
+
+	return 0
+}
+func main() {
+	yyParse(NewLexer(os.Stdin))
 }

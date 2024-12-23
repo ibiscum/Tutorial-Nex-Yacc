@@ -295,10 +295,12 @@ OUTER0:
 	return 0
 }
 
-type yySymType struct{ l, c int }
+type yySymType struct {
+	l, c int
+}
 
 func main() {
 	v := new(yySymType)
 	NewLexer(os.Stdin).Lex(v)
-	fmt.Printf("%d %d\n", v.l, v.c)
+	fmt.Printf("lines %d, characters %d\n", v.l+1, v.c)
 }
